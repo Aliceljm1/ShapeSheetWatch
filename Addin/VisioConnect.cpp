@@ -30,10 +30,10 @@ namespace {
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
-struct CVisioConnect::Impl 
+struct CVisioConnect::Impl
 	: public VEventHandler
 	, IAddinUI
 {
@@ -51,25 +51,25 @@ struct CVisioConnect::Impl
 	{
 		ENTER_METHOD();
 
-		switch(nEventCode) 
+		switch (nEventCode)
 		{
-		case (short)(visEvtApp|visEvtIdle):
+		case (short)(visEvtApp | visEvtIdle) :
 			theApp.ProcessIdleTasks();
 			break;
 
-		case (short)(visEvtApp|visEvtWinActivate):
+		case (short)(visEvtApp | visEvtWinActivate) :
 			OnWindowActivated(pSubjectObj);
 			break;
 
-		case (short)(visEvtWindow|visEvtDel):
+		case (short)(visEvtWindow | visEvtDel) :
 			OnWindowClosed(pSubjectObj);
 			break;
 
-		case (short)(visEvtWindow|visEvtAdd):
+		case (short)(visEvtWindow | visEvtAdd) :
 			OnWindowOpened(pSubjectObj);
 			break;
 
-		case (short)(visEvtCodeWinOnAddonKeyMSG):
+		case (short)(visEvtCodeWinOnAddonKeyMSG) :
 			return OnKeystroke(pSubjectObj, pvResult);
 			break;
 
@@ -81,10 +81,10 @@ struct CVisioConnect::Impl
 	}
 
 	/**------------------------------------------------------------------------
-		
+
 	-------------------------------------------------------------------------*/
 
-	void Create(IDispatch * pApplication, IDispatch * pAddInInst) 
+	void Create(IDispatch * pApplication, IDispatch * pAddInInst)
 	{
 		IVApplicationPtr app;
 		pApplication->QueryInterface(__uuidof(IDispatch), (LPVOID*)&app);
@@ -97,23 +97,23 @@ struct CVisioConnect::Impl
 		if (GetVisioVersion() < 14)
 			m_ui.CreateCommandBarsUI(app);
 
-		IVEventListPtr evt_list = 
+		IVEventListPtr evt_list =
 			app->EventList;
 
-		evt_idle.Advise(evt_list, visEvtApp|visEvtIdle, this);
-		evt_win_activated.Advise(evt_list, visEvtApp|visEvtWinActivate, this);
-		evt_win_opened.Advise(evt_list, visEvtWindow|visEvtAdd, this);
-		evt_win_closed.Advise(evt_list, visEvtWindow|visEvtDel, this);
+		evt_idle.Advise(evt_list, visEvtApp | visEvtIdle, this);
+		evt_win_activated.Advise(evt_list, visEvtApp | visEvtWinActivate, this);
+		evt_win_opened.Advise(evt_list, visEvtWindow | visEvtAdd, this);
+		evt_win_closed.Advise(evt_list, visEvtWindow | visEvtDel, this);
 		evt_keystroke.Advise(evt_list, visEvtCodeWinOnAddonKeyMSG, this);
 
 		theApp.UpdateVisioUI();
 	}
 
 	/**------------------------------------------------------------------------
-		
+
 	-------------------------------------------------------------------------*/
 
-	void Destroy() 
+	void Destroy()
 	{
 		m_ui.DestroyCommandBarsUI();
 
@@ -128,10 +128,10 @@ struct CVisioConnect::Impl
 	}
 
 	/**------------------------------------------------------------------------
-		
+
 	-------------------------------------------------------------------------*/
 
-	void OnRibbonButtonClicked(IDispatch * pControl) 
+	void OnRibbonButtonClicked(IDispatch * pControl)
 	{
 		UINT cmd_id = GetControlCommand(pControl);
 
@@ -140,10 +140,10 @@ struct CVisioConnect::Impl
 	}
 
 	/**------------------------------------------------------------------------
-		
+
 	-------------------------------------------------------------------------*/
 
-	CString GetRibbonLabel(IDispatch* pControl) 
+	CString GetRibbonLabel(IDispatch* pControl)
 	{
 		UINT cmd_id = GetControlCommand(pControl);
 
@@ -156,7 +156,7 @@ struct CVisioConnect::Impl
 	}
 
 	/**------------------------------------------------------------------------
-		
+
 	-------------------------------------------------------------------------*/
 
 	IDispatchPtr m_addin;
@@ -233,13 +233,13 @@ struct CVisioConnect::Impl
 
 		MSG msg;
 
-		msg.hwnd    = reinterpret_cast<HWND>(key_msg->Gethwnd());
+		msg.hwnd = reinterpret_cast<HWND>(key_msg->Gethwnd());
 		msg.message = key_msg->Getmessage();
-		msg.wParam  = key_msg->GetwParam();
-		msg.lParam  = key_msg->GetlParam();
-		msg.pt.x    = key_msg->Getptx();
-		msg.pt.y    = key_msg->Getpty();
-		msg.time    = key_msg->Getposttime();
+		msg.wParam = key_msg->GetwParam();
+		msg.lParam = key_msg->GetlParam();
+		msg.pt.x = key_msg->Getptx();
+		msg.pt.y = key_msg->Getpty();
+		msg.time = key_msg->Getposttime();
 
 		bool result = false;
 
@@ -270,13 +270,14 @@ struct CVisioConnect::Impl
 };
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
 STDMETHODIMP CVisioConnect::OnConnection(IDispatch *pApplication, ext_ConnectMode, IDispatch *pAddInInst, SAFEARRAY ** custom)
 {
 	ENTER_METHOD()
 
+		MessageBox(NULL, _T("visioconnect"), _T("visioconnect"), MB_OK);
 	theApp.GetViewSettings()->Load();
 
 	m_impl->Create(pApplication, pAddInInst);
@@ -286,14 +287,14 @@ STDMETHODIMP CVisioConnect::OnConnection(IDispatch *pApplication, ext_ConnectMod
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
-STDMETHODIMP CVisioConnect::OnDisconnection(ext_DisconnectMode /*RemoveMode*/, SAFEARRAY ** /*custom*/ )
+STDMETHODIMP CVisioConnect::OnDisconnection(ext_DisconnectMode /*RemoveMode*/, SAFEARRAY ** /*custom*/)
 {
 	ENTER_METHOD()
 
-	m_impl->Destroy();
+		m_impl->Destroy();
 
 	theApp.GetViewSettings()->Save();
 	return S_OK;
@@ -302,10 +303,10 @@ STDMETHODIMP CVisioConnect::OnDisconnection(ext_DisconnectMode /*RemoveMode*/, S
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
-STDMETHODIMP CVisioConnect::OnAddInsUpdate (SAFEARRAY ** /*custom*/ )
+STDMETHODIMP CVisioConnect::OnAddInsUpdate(SAFEARRAY ** /*custom*/)
 {
 	ENTER_METHOD();
 
@@ -315,10 +316,10 @@ STDMETHODIMP CVisioConnect::OnAddInsUpdate (SAFEARRAY ** /*custom*/ )
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
-STDMETHODIMP CVisioConnect::OnStartupComplete (SAFEARRAY ** /*custom*/ )
+STDMETHODIMP CVisioConnect::OnStartupComplete(SAFEARRAY ** /*custom*/)
 {
 	ENTER_METHOD();
 
@@ -328,10 +329,10 @@ STDMETHODIMP CVisioConnect::OnStartupComplete (SAFEARRAY ** /*custom*/ )
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
-STDMETHODIMP CVisioConnect::OnBeginShutdown (SAFEARRAY ** /*custom*/ )
+STDMETHODIMP CVisioConnect::OnBeginShutdown(SAFEARRAY ** /*custom*/)
 {
 	ENTER_METHOD();
 
@@ -341,7 +342,7 @@ STDMETHODIMP CVisioConnect::OnBeginShutdown (SAFEARRAY ** /*custom*/ )
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
 STDMETHODIMP CVisioConnect::GetCustomUI(BSTR RibbonID, BSTR * RibbonXml)
@@ -354,21 +355,21 @@ STDMETHODIMP CVisioConnect::GetCustomUI(BSTR RibbonID, BSTR * RibbonXml)
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
 STDMETHODIMP CVisioConnect::OnRibbonButtonClicked(IDispatch * disp)
-{ 
+{
 	ENTER_METHOD();
 
 	m_impl->OnRibbonButtonClicked(disp);
-	return S_OK; 
+	return S_OK;
 
 	LEAVE_METHOD();
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
 STDMETHODIMP CVisioConnect::OnRibbonLoad(IDispatch* disp)
@@ -381,7 +382,7 @@ STDMETHODIMP CVisioConnect::OnRibbonLoad(IDispatch* disp)
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
 STDMETHODIMP CVisioConnect::OnRibbonLoadImage(BSTR bstrID, IPictureDisp ** ppdispImage)
@@ -394,7 +395,7 @@ STDMETHODIMP CVisioConnect::OnRibbonLoadImage(BSTR bstrID, IPictureDisp ** ppdis
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
 STDMETHODIMP CVisioConnect::IsRibbonButtonEnabled(IDispatch * RibbonControl, VARIANT_BOOL* pResult)
@@ -408,7 +409,7 @@ STDMETHODIMP CVisioConnect::IsRibbonButtonEnabled(IDispatch * RibbonControl, VAR
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
 STDMETHODIMP CVisioConnect::GetRibbonLabel(IDispatch *pControl, BSTR *pbstrLabel)
@@ -422,7 +423,7 @@ STDMETHODIMP CVisioConnect::GetRibbonLabel(IDispatch *pControl, BSTR *pbstrLabel
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
 STDMETHODIMP CVisioConnect::GetRibbonImage(IDispatch *pControl, IPictureDisp ** ppdispImage)
@@ -431,7 +432,7 @@ STDMETHODIMP CVisioConnect::GetRibbonImage(IDispatch *pControl, IPictureDisp ** 
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
 STDMETHODIMP CVisioConnect::IsRibbonButtonVisible(IDispatch * RibbonControl, VARIANT_BOOL* pResult)
@@ -445,7 +446,7 @@ STDMETHODIMP CVisioConnect::IsRibbonButtonVisible(IDispatch * RibbonControl, VAR
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
 STDMETHODIMP CVisioConnect::OnRibbonCheckboxClicked(IDispatch * RibbonControl, VARIANT_BOOL* pResult)
@@ -460,7 +461,7 @@ STDMETHODIMP CVisioConnect::OnRibbonCheckboxClicked(IDispatch * RibbonControl, V
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
 STDMETHODIMP CVisioConnect::IsRibbonButtonPressed(IDispatch * RibbonControl, VARIANT_BOOL* pResult)
@@ -475,38 +476,38 @@ STDMETHODIMP CVisioConnect::IsRibbonButtonPressed(IDispatch * RibbonControl, VAR
 
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
-HRESULT CVisioConnect::FinalConstruct ()
+HRESULT CVisioConnect::FinalConstruct()
 {
 	return S_OK;
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
-void CVisioConnect::FinalRelease ()
+void CVisioConnect::FinalRelease()
 {
 
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
-CVisioConnect::CVisioConnect ()
+CVisioConnect::CVisioConnect()
 	: m_impl(new Impl())
 {
 
 }
 
 /**------------------------------------------------------------------------
-	
+
 -------------------------------------------------------------------------*/
 
-CVisioConnect::~CVisioConnect ()
+CVisioConnect::~CVisioConnect()
 {
 	delete m_impl;
 }

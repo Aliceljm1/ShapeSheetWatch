@@ -1,6 +1,8 @@
 # Untracked files
 x64
 x86
+.vs
+
 *.user
 *.aps
 obj

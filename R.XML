@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui"
+          onLoad="OnRibbonLoad" loadImage="OnRibbonLoadImage"
+          >
+  <ribbon>
+    <tabs>
+      <tab idMso="TabDeveloper" >
+        <group id="BetterShapeSheet">
+          <toggleButton id="ShowSheetWindow" tag="101" image="210" size="large"
+                        onAction="OnRibbonCheckboxClicked" getLabel="GetRibbonLabel" getEnabled="IsRibbonButtonEnabled" getPressed="IsRibbonButtonPressed" />
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+
+  <contextMenus>
+    <contextMenu idMso="ContextMenuShapeSheet">
+      <menuSeparator id="sep1" />
+      <button id="ID_AddWatch" tag="102"  image="101"
+              onAction="OnRibbonButtonClicked" getLabel="GetRibbonLabel" getEnabled="IsRibbonButtonEnabled" />
+    </contextMenu>
+  </contextMenus>
+  
+  </customUI> 

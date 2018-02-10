@@ -3,7 +3,7 @@
   <PropertyGroup>
     <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
     <_PropertySheetDisplayName>Addin</_PropertySheetDisplayName>
-    <HTMLayoutSDK Condition="'$(HTMLayoutSDK)'==''" >C:\Projects\Libs\HTMLayoutSDK\</HTMLayoutSDK>
+    <HTMLayoutSDK Condition="'$(HTMLayoutSDK)'==''" >D:\OtherPart\HTMLayoutSDK\</HTMLayoutSDK>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Midl>
